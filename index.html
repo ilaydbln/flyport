@@ -1,0 +1,274 @@
+<!doctype html>
+<html lang="tr">
+<head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>FLYPORT</title>
+    <link rel="stylesheet" href="/styles.css?v=runway-premium-dark">
+</head>
+<body class="flyport-bg">
+<header class="topbar">
+    <a class="brand" href="#ana-sayfa" aria-label="FLYPORT ana sayfa">
+        <img class="brand-logo" src="/assets/flyport-logo.png" alt="FLYPORT logosu">
+        <strong>FLYPORT</strong>
+    </a>
+
+    <nav class="nav-links" aria-label="Ana menü">
+        <a href="#ana-sayfa">Ana Sayfa</a>
+        <a class="active" href="#ucus-ara">Uçuş Ara</a>
+        <a href="#rezervasyonlarim">Rezervasyonlarım</a>
+        <a href="#pnr-sorgula">PNR Sorgula</a>
+        <a href="#hakkimizda">Hakkımızda</a>
+    </nav>
+
+    <div id="navAuth" class="nav-auth">
+        <a id="authGuestLink" class="auth-link" href="#giris">Giriş Yap / Kayıt Ol</a>
+        <div id="authUserMenu" class="auth-user-menu">
+            <span id="navWelcome">Hoş geldin</span>
+            <button id="logoutBtn" type="button">Çıkış Yap</button>
+        </div>
+    </div>
+</header>
+
+<main>
+    <section id="ana-sayfa" class="hero-section">
+        <div class="hero-card">
+            <img src="/assets/hero-plane.png" alt="Bulutların üzerinde kalkış yapan uçak">
+        </div>
+
+        <form id="searchForm" class="hero-search flight-search-form" aria-label="Hızlı uçuş arama">
+            <label class="field">
+                <span>Nereden</span>
+                    <input id="fromInput" name="fromAirportCode" placeholder="IST">
+            </label>
+            <label class="field">
+                <span>Nereye</span>
+                    <input id="toInput" name="toAirportCode" placeholder="AYT">
+            </label>
+            <label class="field">
+                <span>Tarih</span>
+                    <input id="dateInput" name="flightDate" type="date">
+            </label>
+            <button id="homeSearchButton" type="submit">Uçuş Ara</button>
+        </form>
+    </section>
+
+    <section id="ucus-ara" class="page-section flight-search-section">
+        <div class="flight-header">
+            <small>UÇUŞ ARA</small>
+            <h1>Nereden, nereye ve tarih seçerek uygun uçuşları listele.</h1>
+
+            <form id="sectionSearchForm" class="section-search flight-search-form" aria-label="Uçuş arama">
+                <label class="field">
+                    <span>Nereden</span>
+                    <input name="fromAirportCode" placeholder="IST">
+                </label>
+                <label class="field">
+                    <span>Nereye</span>
+                    <input name="toAirportCode" placeholder="AYT">
+                </label>
+                <label class="field">
+                    <span>Tarih</span>
+                    <input name="flightDate" type="date">
+                </label>
+                <button type="submit">Uçuş Ara</button>
+            </form>
+        </div>
+
+        <div class="main-grid">
+            <section class="panel results-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Uçuş Sonuçları</p>
+                        <h2 id="selectedDateLabel">Tüm tarihler</h2>
+                    </div>
+                    <button id="resetSearch" class="ghost" type="button">Tüm uçuşlar</button>
+                </div>
+                <div class="flight-results">
+                    <div id="flightList" class="flight-list"></div>
+                </div>
+            </section>
+
+            <section class="panel booking-panel">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Koltuk seçimi</p>
+                        <h2 id="selectedFlightTitle">Uçuş seçin</h2>
+                    </div>
+                    <span id="lockBadge" class="badge">Kilit yok</span>
+                </div>
+
+                <div class="seat-legend">
+                    <span><i class="available"></i> Boş</span>
+                    <span><i class="locked"></i> Kilitli</span>
+                    <span><i class="reserved"></i> Dolu</span>
+                    <span><i class="selected"></i> Seçili</span>
+                </div>
+
+                <div class="plane">
+                    <div class="cockpit"></div>
+                    <div id="seatMap" class="seat-map empty-state">Bir uçuş seçildiğinde koltuklar burada görünür.</div>
+                </div>
+            </section>
+        </div>
+
+        <section class="panel reservation-panel">
+            <div class="panel-header">
+                <div>
+                    <p class="eyebrow">Rezervasyon</p>
+                    <h2>Yolcu ve ödeme bilgileri</h2>
+                </div>
+            </div>
+            <form id="reservationForm" class="reservation-form">
+                <label class="field">
+                    <span>Yolcu adı</span>
+                    <input id="passengerName" required autocomplete="name" placeholder="Ad Soyad">
+                    <small class="field-error" id="passengerNameError"></small>
+                </label>
+                <label class="field">
+                    <span>E-posta</span>
+                    <input id="passengerEmail" type="email" required autocomplete="email" placeholder="ilayda@example.com">
+                    <small class="field-error" id="passengerEmailError"></small>
+                </label>
+                <label class="field">
+                    <span>Telefon</span>
+                    <input id="passengerPhone" type="tel" required inputmode="numeric" autocomplete="tel" placeholder="+90 555 123 45 67">
+                    <small class="field-error" id="passengerPhoneError"></small>
+                </label>
+                <label class="field card-number-field">
+                    <span>Kart no</span>
+                    <input id="cardNumber" required inputmode="numeric" autocomplete="cc-number" maxlength="19" placeholder="4111 1111 1111 1111">
+                    <b id="cardType" class="card-type">Kart</b>
+                    <small class="field-error" id="cardNumberError"></small>
+                </label>
+                <label class="field">
+                    <span>Son Kullanma Tarihi</span>
+                    <input id="cardExpiry" required inputmode="numeric" autocomplete="cc-exp" maxlength="5" placeholder="12/29">
+                    <small class="field-error" id="cardExpiryError"></small>
+                </label>
+                <label class="field">
+                    <span>CVV</span>
+                    <input id="cardCvv" required type="password" inputmode="numeric" autocomplete="cc-csc" maxlength="4" placeholder="123">
+                    <small class="field-error" id="cardCvvError"></small>
+                </label>
+                <button id="reservationSubmitBtn" type="submit" disabled>Rezervasyon yap</button>
+            </form>
+        </section>
+    </section>
+
+    <section id="rezervasyonlarim" class="page-section reservations-page">
+        <div class="section-heading reservations-hero">
+            <p class="eyebrow">Rezervasyonlarım</p>
+            <h1>Kullanıcının aldığı biletleri görüntüle ve iptal/iade işlemini yönet.</h1>
+        </div>
+
+        <div class="account-row">
+            <label class="field user-field">
+                <span>Oturum</span>
+                <select id="userSelect"></select>
+            </label>
+        </div>
+
+        <div class="main-grid lower-grid reservations-grid">
+            <section class="panel reservations-glass-card">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Kullanıcı</p>
+                        <h2>Rezervasyonlarım</h2>
+                    </div>
+                </div>
+                <div id="myReservations" class="reservation-list empty-state">Henüz rezervasyon yok.</div>
+            </section>
+
+            <section class="panel reservations-glass-card">
+                <div class="panel-header">
+                    <div>
+                        <p class="eyebrow">Admin</p>
+                        <h2>Tüm rezervasyonlar</h2>
+                    </div>
+                </div>
+                <div id="adminReservations" class="reservation-list empty-state">Admin kullanıcıyı seçin.</div>
+            </section>
+        </div>
+    </section>
+
+    <section id="pnr-sorgula" class="page-section pnr-page glass-panel">
+        <div class="section-heading">
+            <p class="eyebrow">PNR Sorgula</p>
+            <h1>PNR kodu ya da rezervasyon numarasıyla bilet detaylarını görüntüle.</h1>
+        </div>
+
+        <form id="pnrForm" class="pnr-form">
+            <label class="field">
+                <span>PNR / Rezervasyon No</span>
+                <input id="pnrInput" placeholder="Örn: FR-5001 veya 5001">
+            </label>
+            <button type="submit">Sorgula</button>
+        </form>
+        <div id="pnrResult" class="pnr-result empty-state">PNR kodu girildiğinde rezervasyon özeti burada görünür.</div>
+    </section>
+
+    <section id="hakkimizda" class="about-section runway-glass-section">
+        <div>
+            <p class="eyebrow">Hakkımızda</p>
+            <h1>FLYPORT, yolculuğunuzu planlamayı hızlı, güvenli ve konforlu hale getiren premium uçuş rezervasyon platformudur.</h1>
+        </div>
+        <p>
+            Uygun uçuşları karşılaştırabilir, koltuğunuzu seçebilir, rezervasyonunuzu kolayca oluşturabilir
+            ve PNR kodunuzla bilet detaylarını dilediğiniz zaman görüntüleyebilirsiniz. FLYPORT,
+            seyahat sürecini tek ekranda sade, şık ve erişilebilir bir deneyime dönüştürür.
+        </p>
+    </section>
+
+    <section id="giris" class="auth-section runway-glass-section">
+        <div>
+            <p class="eyebrow">Giriş Yap / Kayıt Ol</p>
+            <h1>Uçuş işlemlerinize devam etmek için giriş yapın veya yeni hesap oluşturun.</h1>
+        </div>
+        <div id="authPanel" class="auth-panel auth-mode-login">
+            <div class="auth-tabs" role="tablist" aria-label="Giriş ve kayıt seçimi">
+                <button id="showLoginBtn" class="active" type="button">Giriş Yap</button>
+                <button id="showRegisterBtn" type="button">Kayıt Ol</button>
+            </div>
+
+            <h2 id="authFormTitle">Giriş Yap</h2>
+
+            <form id="loginForm" class="auth-form">
+                <label class="field">
+                    <span>E-posta</span>
+                    <input id="loginEmail" type="email" required placeholder="mail@example.com">
+                </label>
+                <label class="field">
+                    <span>Şifre</span>
+                    <input id="loginPassword" type="password" required placeholder="••••••••">
+                </label>
+                <button type="submit">Giriş Yap</button>
+            </form>
+
+            <form id="registerForm" class="auth-form">
+                <label class="field">
+                    <span>Ad Soyad</span>
+                    <input id="registerName" required placeholder="Ad Soyad">
+                </label>
+                <label class="field">
+                    <span>E-posta</span>
+                    <input id="registerEmail" type="email" required placeholder="mail@example.com">
+                </label>
+                <label class="field">
+                    <span>Şifre</span>
+                    <input id="registerPassword" type="password" required placeholder="••••••••">
+                </label>
+                <label class="field">
+                    <span>Şifre Tekrar</span>
+                    <input id="registerPasswordConfirm" type="password" required placeholder="••••••••">
+                </label>
+                <button type="submit">Kayıt Ol</button>
+            </form>
+        </div>
+    </section>
+</main>
+
+<div id="toast" class="toast" role="status"></div>
+<script src="/app.js?v=admin-reservations-mode"></script>
+</body>
+</html>
